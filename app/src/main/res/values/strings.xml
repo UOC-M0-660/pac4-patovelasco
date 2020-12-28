@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">PAC4</string>
+    <string name="twitch_login_button">Login with Twitch</string>
+    <string name="activity_login_title">Login</string>
+    <string name="activity_oauth_title">Login with Twitch</string>
+    <string name="activity_streams_title">Streams</string>
+    <string name="activity_profile_title">Streams</string>
+
+    <string name="menu_user">Profile</string>
+
+    <string name="hint_user_description">Description</string>
+    <string name="button_save_description">Update Description</string>
+    <string name="button_logout">Log out</string>
+
+    <plurals name="viewers_text">
+        <item quantity="one">%s viewer</item>
+        <item quantity="other">%s viewers</item>
+    </plurals>
+    <string name="views_text">%d views</string>
+
+    <string name="error_oauth">Login with Twitch Failed</string>
+    <string name="error_streams">Error getting Streams</string>
+    <string name="error_profile">Error getting Profile</string>
+    <string name="error_profile_update">Error updating profile</string>
+</resources>
