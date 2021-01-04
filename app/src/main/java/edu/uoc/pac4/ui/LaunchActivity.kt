@@ -5,24 +5,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import edu.uoc.pac4.R
 import edu.uoc.pac4.ui.login.LoginActivity
-import edu.uoc.pac4.data.SessionManager
+import edu.uoc.pac4.data.datasources.LocalDataSource
 import edu.uoc.pac4.ui.streams.StreamsActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class LaunchActivity : AppCompatActivity() {
+
+    private val viewModel: LaunchViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launch)
+        viewModel.getUserAvailability()
         checkUserSession()
     }
 
     private fun checkUserSession() {
-        if (SessionManager(this).isUserAvailable()) {
-            // User is available, open Streams Activity
-            startActivity(Intent(this, StreamsActivity::class.java))
-        } else {
-            // User not available, request Login
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-        finish()
+        viewModel.isUserAvailable.observe(this, { user ->
+            if (user) {
+                // User is available, start Streams Activity
+                startActivity(Intent(this@LaunchActivity, StreamsActivity::class.java))
+            } else {
+                // User not available, start Login Activity
+                startActivity(Intent(this@LaunchActivity, LoginActivity::class.java))
+            }
+            finish()
+        })
     }
 }

@@ -15,18 +15,18 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import edu.uoc.pac4.R
 import edu.uoc.pac4.data.network.Network
 import edu.uoc.pac4.ui.login.LoginActivity
-import edu.uoc.pac4.data.SessionManager
-import edu.uoc.pac4.data.TwitchApiService
+import edu.uoc.pac4.data.datasources.LocalDataSource
+import edu.uoc.pac4.data.datasources.RemoteDataSource
 import edu.uoc.pac4.data.network.UnauthorizedException
 import edu.uoc.pac4.data.user.User
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileActivity : AppCompatActivity() {
 
     private val TAG = "ProfileActivity"
-
-    private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
+    private val viewModel: ProfileViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,22 +50,20 @@ class ProfileActivity : AppCompatActivity() {
             // Logout
             logout()
         }
+
+        viewModel.user.observe(this, { user ->
+            // Update the UI with the user data
+            setUserInfo(user)
+            // Hide Loading
+            progressBar.visibility = GONE
+        })
     }
 
     private suspend fun getUserProfile() {
         progressBar.visibility = VISIBLE
         // Retrieve the Twitch User Profile using the API
         try {
-            twitchApiService.getUser()?.let { user ->
-                // Success :)
-                // Update the UI with the user data
-                setUserInfo(user)
-            } ?: run {
-                // Error :(
-                showError(getString(R.string.error_profile))
-            }
-            // Hide Loading
-            progressBar.visibility = GONE
+            viewModel.getUser()
         } catch (t: UnauthorizedException) {
             onUnauthorized()
         }
@@ -76,16 +74,7 @@ class ProfileActivity : AppCompatActivity() {
         progressBar.visibility = VISIBLE
         // Update the Twitch User Description using the API
         try {
-            twitchApiService.updateUserDescription(description)?.let { user ->
-                // Success :)
-                // Update the UI with the user data
-                setUserInfo(user)
-            } ?: run {
-                // Error :(
-                showError(getString(R.string.error_profile))
-            }
-            // Hide Loading
-            progressBar.visibility = GONE
+            viewModel.updateUser(description)
         } catch (t: UnauthorizedException) {
             onUnauthorized()
         }
@@ -109,8 +98,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun logout() {
         // Clear local session data
-        SessionManager(this).clearAccessToken()
-        SessionManager(this).clearRefreshToken()
+        viewModel.clearDataForLogout()
         // Close this and all parent activities
         finishAffinity()
         // Open Login
@@ -119,7 +107,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun onUnauthorized() {
         // Clear local access token
-        SessionManager(this).clearAccessToken()
+        viewModel.clearDataForUnauthorized()
         // User was logged out, close screen and all parent screens and open login
         finishAffinity()
         startActivity(Intent(this, LoginActivity::class.java))

@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import edu.uoc.pac4.data.oauth.OAuthTokensResponse
 import edu.uoc.pac4.data.oauth.OAuthConstants
-import edu.uoc.pac4.data.SessionManager
+import edu.uoc.pac4.data.datasources.LocalDataSource
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.*
@@ -56,13 +56,13 @@ object Network {
             // Add OAuth Feature
             install(OAuthFeature) {
                 getToken = {
-                    val accessToken = SessionManager(context).getAccessToken() ?: ""
+                    val accessToken = LocalDataSource(context).getAccessToken() ?: ""
                     Log.d(TAG, "Adding Bearer header with token $accessToken")
                     accessToken
                 }
                 refreshToken = {
                     // Remove expired access token
-                    SessionManager(context).clearAccessToken()
+                    LocalDataSource(context).clearAccessToken()
                     // Launch token refresh request
                     launchTokenRefresh(context)
                 }
@@ -77,32 +77,32 @@ object Network {
     }
 
     private suspend fun launchTokenRefresh(context: Context) {
-        val sessionManager = SessionManager(context)
+        val localDataSource = LocalDataSource(context)
         // Get Refresh Token
-        sessionManager.getRefreshToken()?.let { refreshToken ->
+        localDataSource.getRefreshToken()?.let { refreshToken ->
             try {
                 // Launch Refresh Request
                 val response =
-                    createHttpClient(context).post<OAuthTokensResponse>(Endpoints.tokenUrl) {
-                        parameter("client_id", OAuthConstants.clientID)
-                        parameter("client_secret", OAuthConstants.clientSecret)
-                        parameter("refresh_token", refreshToken)
-                        parameter("grant_type", "refresh_token")
-                    }
+                        createHttpClient(context).post<OAuthTokensResponse>(Endpoints.tokenUrl) {
+                            parameter("client_id", OAuthConstants.clientID)
+                            parameter("client_secret", OAuthConstants.clientSecret)
+                            parameter("refresh_token", refreshToken)
+                            parameter("grant_type", "refresh_token")
+                        }
                 Log.d(TAG, "Got new Access token ${response.accessToken}")
                 // Save new Tokens
-                sessionManager.saveAccessToken(response.accessToken)
-                response.refreshToken?.let { sessionManager.saveRefreshToken(it) }
+                localDataSource.saveAccessToken(response.accessToken)
+                response.refreshToken?.let { localDataSource.saveRefreshToken(it) }
             } catch (t: Throwable) {
                 Log.d(TAG, "Error refreshing tokens", t)
                 // Clear tokens
-                sessionManager.clearAccessToken()
-                sessionManager.clearRefreshToken()
+                localDataSource.clearAccessToken()
+                localDataSource.clearRefreshToken()
             }
         } ?: run {
             Log.e(TAG, "No refresh token available")
             // Clear token
-            sessionManager.clearAccessToken()
+            localDataSource.clearAccessToken()
         }
     }
 }

@@ -13,17 +13,19 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import edu.uoc.pac4.ui.LaunchActivity
 import edu.uoc.pac4.R
-import edu.uoc.pac4.data.SessionManager
-import edu.uoc.pac4.data.TwitchApiService
+import edu.uoc.pac4.data.datasources.LocalDataSource
+import edu.uoc.pac4.data.datasources.RemoteDataSource
 import edu.uoc.pac4.data.network.Endpoints
 import edu.uoc.pac4.data.network.Network
 import edu.uoc.pac4.data.oauth.OAuthConstants
 import kotlinx.android.synthetic.main.activity_oauth.*
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class OAuthActivity : AppCompatActivity() {
 
     private val TAG = "StreamsActivity"
+    private val viewModel: OAuthViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,34 +94,13 @@ class OAuthActivity : AppCompatActivity() {
         // Show Loading Indicator
         progressBar.visibility = View.VISIBLE
 
-        // Create Twitch Service
-        val service = TwitchApiService(Network.createHttpClient(this))
-        // Launch new thread attached to this Activity.
-        // If the Activity is closed, this Thread will be cancelled
-        lifecycleScope.launch {
+        viewModel.login(authorizationCode)
 
-            // Launch get Tokens Request
-            service.getTokens(authorizationCode)?.let { response ->
-                // Success :)
-
-                Log.d(TAG, "Got Access token ${response.accessToken}")
-
-                // Save access token and refresh token using the SessionManager class
-                val sessionManager = SessionManager(this@OAuthActivity)
-                sessionManager.saveAccessToken(response.accessToken)
-                response.refreshToken?.let {
-                    sessionManager.saveRefreshToken(it)
-                }
-            } ?: run {
-                // Failure :(
-
-                // Show Error Message
-                Toast.makeText(
-                    this@OAuthActivity,
-                    getString(R.string.error_oauth),
-                    Toast.LENGTH_LONG
-                ).show()
-                // Restart Activity
+        viewModel.login.observe(this, { login ->
+            if (login) {
+                Log.d(TAG, "Login with Twitch Success")
+            } else {
+                Log.d(TAG, "Login with Twitch Failed")
                 finish()
                 startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
             }
@@ -130,6 +111,6 @@ class OAuthActivity : AppCompatActivity() {
             // Restart app to navigate to StreamsActivity
             startActivity(Intent(this@OAuthActivity, LaunchActivity::class.java))
             finish()
-        }
+        })
     }
 }

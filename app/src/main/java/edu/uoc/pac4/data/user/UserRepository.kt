@@ -9,4 +9,8 @@ interface UserRepository {
 
     suspend fun updateUser(description: String): User?
 
+    fun clearDataForUnauthorized()
+
+    fun clearDataForLogout()
+
 }
