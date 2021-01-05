@@ -9,8 +9,8 @@ import edu.uoc.pac4.data.datasources.RemoteData
  */
 class OAuthAuthenticationRepository(
     // TODO: Add any datasources you may need
-        private val localData: LocalData,
-        private val remoteData: RemoteData
+    private val localData: LocalData,
+    private val remoteData: RemoteData
 ) : AuthenticationRepository {
 
     private val tag = "OAuthAuthenticationRepository"

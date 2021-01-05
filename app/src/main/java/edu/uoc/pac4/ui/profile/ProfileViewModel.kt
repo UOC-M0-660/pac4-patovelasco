@@ -8,7 +8,7 @@ import edu.uoc.pac4.data.user.UserRepository
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-        private val repository: UserRepository
+    private val repository: UserRepository
 ) : ViewModel() {
 
     // Live Data
@@ -26,13 +26,11 @@ class ProfileViewModel(
         }
     }
 
-    fun clearDataForUnauthorized()
-    {
+    fun clearDataForUnauthorized() {
         repository.clearDataForUnauthorized()
     }
 
-    fun clearDataForLogout()
-    {
+    fun clearDataForLogout() {
         repository.clearDataForLogout()
     }
 }

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PAC4</string>
     <string name="twitch_login_button">Login with Twitch</string>
     <string name="activity_login_title">Login</string>
@@ -19,7 +19,11 @@
     <string name="views_text">%d views</string>
 
     <string name="error_oauth">Login with Twitch Failed</string>
-    <string name="error_streams">Error getting Streams</string>
-    <string name="error_profile">Error getting Profile</string>
-    <string name="error_profile_update">Error updating profile</string>
+    <string name="error_streams" tools:keep="@string/error_streams">Error getting Streams</string>
+    <string name="error_profile" tools:keep="@string/error_profile">Error getting Profile</string>
+    <string name="error_profile_update" tools:keep="@string/error_profile_update">Error updating profile</string>
+    <string name="twitch_image">Twitch image</string>
+    <string name="image_icon">Image icon</string>
+    <string name="twitch_image_user">Twitch image user</string>
+    <string name="image_icon_stream">image icon</string>
 </resources>

@@ -6,7 +6,8 @@ import androidx.lifecycle.viewModelScope
 import edu.uoc.pac4.data.oauth.AuthenticationRepository
 import kotlinx.coroutines.launch
 
-class OAuthViewModel (private val repository: AuthenticationRepository
+class OAuthViewModel(
+    private val repository: AuthenticationRepository
 ) : ViewModel() {
 
     // Live Data

@@ -5,24 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.pac4.R
-import edu.uoc.pac4.data.datasources.LocalDataSource
-import edu.uoc.pac4.data.datasources.RemoteDataSource
-import edu.uoc.pac4.data.network.Network
 import edu.uoc.pac4.data.network.UnauthorizedException
 import edu.uoc.pac4.ui.login.LoginActivity
 import edu.uoc.pac4.ui.profile.ProfileActivity
 import kotlinx.android.synthetic.main.activity_streams.*
-import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class StreamsActivity : AppCompatActivity() {
 
-    private val TAG = "StreamsActivity"
+    private val tag = "StreamsActivity"
 
     private val adapter = StreamsAdapter()
     private val layoutManager = LinearLayoutManager(this)
@@ -65,7 +59,7 @@ class StreamsActivity : AppCompatActivity() {
 
     private var nextCursor: String? = null
     private fun getStreams(cursor: String? = null) {
-        Log.d(TAG, "Requesting streams with cursor $cursor")
+        Log.d(tag, "Requesting streams with cursor $cursor")
 
         // Show Loading
         swipeRefreshLayout.isRefreshing = true
@@ -75,7 +69,7 @@ class StreamsActivity : AppCompatActivity() {
             viewModel.getStreams(cursor)
             viewModel.streams.observe(this, { result ->
                 // Success :)
-                Log.d(TAG, "Streams => $result")
+                Log.d(tag, "Streams => $result")
 
                 val streams = result.second
                 // Update UI with Streams
@@ -94,12 +88,12 @@ class StreamsActivity : AppCompatActivity() {
                 swipeRefreshLayout.isRefreshing = false
             })
         } catch (t: UnauthorizedException) {
-                Log.w(TAG, "Unauthorized Error getting streams", t)
-                // Clear local access token
-                viewModel.clearAccessToken()
-                // User was logged out, close screen and open login
-                finish()
-                startActivity(Intent(this@StreamsActivity, LoginActivity::class.java))
+            Log.w(tag, "Unauthorized Error getting streams", t)
+            // Clear local access token
+            viewModel.clearAccessToken()
+            // User was logged out, close screen and open login
+            finish()
+            startActivity(Intent(this@StreamsActivity, LoginActivity::class.java))
         }
     }
 

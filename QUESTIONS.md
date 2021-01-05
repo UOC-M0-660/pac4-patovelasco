@@ -80,3 +80,14 @@ Cuando se establece un patrón de diseño o arquitectura, uno de los primeros as
 
 #### Explica cómo se hace para aplicar inyección de dependencias de forma manual a un proyecto (sin utilizar librerías externas).
 La inyección de dependencias se la puede realizar pasando el objeto en el constructor de la clase, o con una función pública para setear el valor y usando una variable tipo lateinit, para lo cual se debe crear los objetos que necesitemos fuera de la clase, y pasarlos como parámetro.
+
+---
+
+### Análisis de código estático
+
+#### Haz una lista con 5 de ellos y explica de qué problema te avisan y cómo corregirlos.
+- **Accesibilidad:** Image without contentDescription => se solventa ingresando una descripción para la imagen.
+- **Convenciones de nombres:** Private property naming convention => se solventa nombrando correctamente la variable.
+- **Security:** Using setJavaScriptEnabled => se omite utilizando @SuppressLint("SetJavaScriptEnabled").
+- **Style issues:** Class member can have 'private' visibility => se solventa declarando la función como privada.
+- **XML:** Unused XML schema declaration => se solventa quitando la declaración de esquema que no se está usando.

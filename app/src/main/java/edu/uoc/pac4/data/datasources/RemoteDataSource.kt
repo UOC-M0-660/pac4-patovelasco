@@ -11,7 +11,6 @@ import edu.uoc.pac4.data.user.UsersResponse
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
-import io.ktor.client.request.get
 
 class RemoteDataSource(private val httpClient: HttpClient) : RemoteData {
 
@@ -22,13 +21,13 @@ class RemoteDataSource(private val httpClient: HttpClient) : RemoteData {
         // Get Tokens from Twitch
         return try {
             httpClient
-                    .post<OAuthTokensResponse>(Endpoints.tokenUrl) {
-                        parameter("client_id", OAuthConstants.clientID)
-                        parameter("client_secret", OAuthConstants.clientSecret)
-                        parameter("code", authorizationCode)
-                        parameter("grant_type", "authorization_code")
-                        parameter("redirect_uri", OAuthConstants.redirectUri)
-                    }
+                .post<OAuthTokensResponse>(Endpoints.tokenUrl) {
+                    parameter("client_id", OAuthConstants.clientID)
+                    parameter("client_secret", OAuthConstants.clientSecret)
+                    parameter("code", authorizationCode)
+                    parameter("grant_type", "authorization_code")
+                    parameter("redirect_uri", OAuthConstants.redirectUri)
+                }
 
         } catch (t: Throwable) {
             Log.w(tag, "Error Getting Access token", t)
@@ -41,9 +40,9 @@ class RemoteDataSource(private val httpClient: HttpClient) : RemoteData {
     override suspend fun getStreams(cursor: String?): StreamsResponse? {
         try {
             return httpClient
-                    .get<StreamsResponse>(Endpoints.streamsUrl) {
-                        cursor?.let { parameter("after", it) }
-                    }
+                .get<StreamsResponse>(Endpoints.streamsUrl) {
+                    cursor?.let { parameter("after", it) }
+                }
         } catch (t: Throwable) {
             Log.w(tag, "Error getting streams", t)
             // Try to handle error
@@ -65,7 +64,7 @@ class RemoteDataSource(private val httpClient: HttpClient) : RemoteData {
     override suspend fun getUser(): User? {
         try {
             val response = httpClient
-                    .get<UsersResponse>(Endpoints.usersUrl)
+                .get<UsersResponse>(Endpoints.usersUrl)
 
             return response.data?.firstOrNull()
         } catch (t: Throwable) {
@@ -89,9 +88,9 @@ class RemoteDataSource(private val httpClient: HttpClient) : RemoteData {
     override suspend fun updateUserDescription(description: String): User? {
         try {
             val response = httpClient
-                    .put<UsersResponse>(Endpoints.usersUrl) {
-                        parameter("description", description)
-                    }
+                .put<UsersResponse>(Endpoints.usersUrl) {
+                    parameter("description", description)
+                }
 
             return response.data?.firstOrNull()
         } catch (t: Throwable) {

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package edu.uoc.pac4
 
 import android.app.Application
@@ -19,7 +21,7 @@ class MyApplication : Application() {
             // use the Android context given there
             androidContext(this@MyApplication)
 
-            modules(dataModule,uiModule)
+            modules(dataModule, uiModule)
         }
     }
 }

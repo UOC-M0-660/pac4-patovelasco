@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Margins-->
-    <dimen name="margin_xxxsmall">2dp</dimen>
-    <dimen name="margin_xxsmall">4dp</dimen>
-    <dimen name="margin_xsmall">8dp</dimen>
+    <dimen name="margin_xxxsmall" tools:keep="@dimen/margin_xxxsmall">2dp</dimen>
+    <dimen name="margin_xxsmall" tools:keep="@dimen/margin_xxsmall">4dp</dimen>
+    <dimen name="margin_xsmall" tools:keep="@dimen/margin_xsmall">8dp</dimen>
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
-    <dimen name="margin_large">24dp</dimen>
-    <dimen name="margin_xlarge">32dp</dimen>
-    <dimen name="margin_xxlarge">48dp</dimen>
-    <dimen name="margin_xxxlarge">64dp</dimen>
+    <dimen name="margin_large" tools:keep="@dimen/margin_large">24dp</dimen>
+    <dimen name="margin_xlarge" tools:keep="@dimen/margin_xlarge">32dp</dimen>
+    <dimen name="margin_xxlarge" tools:keep="@dimen/margin_xxlarge">48dp</dimen>
+    <dimen name="margin_xxxlarge" tools:keep="@dimen/margin_xxxlarge">64dp</dimen>
 
 
     <!-- Custom -->

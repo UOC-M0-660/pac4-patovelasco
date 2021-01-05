@@ -9,8 +9,8 @@ import edu.uoc.pac4.data.datasources.RemoteData
 
 class TwitchUserRepository(
     // TODO: Add any datasources you may need
-        private val localData: LocalData,
-        private val remoteData: RemoteData
+    private val localData: LocalData,
+    private val remoteData: RemoteData
 ) : UserRepository {
 
     override suspend fun getUser(): User? {

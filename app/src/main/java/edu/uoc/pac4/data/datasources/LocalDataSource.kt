@@ -2,11 +2,11 @@ package edu.uoc.pac4.data.datasources
 
 import android.content.Context
 
-class LocalDataSource(context: Context): LocalData {
+class LocalDataSource(context: Context) : LocalData {
 
     private val sharedPreferencesName = "sessionPreferences"
     private val sharedPreferences =
-            context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
+        context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
 
     private val accessTokenKey = "accessTokeKey"
     private val refreshTokenKey = "refreshTokenKey"

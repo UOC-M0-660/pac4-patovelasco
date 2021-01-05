@@ -1,8 +1,8 @@
 package edu.uoc.pac4.ui.login.oauth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,21 +10,17 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import edu.uoc.pac4.ui.LaunchActivity
+import androidx.appcompat.app.AppCompatActivity
 import edu.uoc.pac4.R
-import edu.uoc.pac4.data.datasources.LocalDataSource
-import edu.uoc.pac4.data.datasources.RemoteDataSource
 import edu.uoc.pac4.data.network.Endpoints
-import edu.uoc.pac4.data.network.Network
 import edu.uoc.pac4.data.oauth.OAuthConstants
+import edu.uoc.pac4.ui.LaunchActivity
 import kotlinx.android.synthetic.main.activity_oauth.*
-import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class OAuthActivity : AppCompatActivity() {
 
-    private val TAG = "StreamsActivity"
+    private val tag = "StreamsActivity"
     private val viewModel: OAuthViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +29,7 @@ class OAuthActivity : AppCompatActivity() {
         launchOAuthAuthorization()
     }
 
-    fun buildOAuthUri(): Uri {
+    private fun buildOAuthUri(): Uri {
         return Uri.parse(Endpoints.authorizationUrl)
             .buildUpon()
             .appendQueryParameter("client_id", OAuthConstants.clientID)
@@ -44,6 +40,7 @@ class OAuthActivity : AppCompatActivity() {
             .build()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun launchOAuthAuthorization() {
         //  Create URI
         val uri = buildOAuthUri()
@@ -98,9 +95,9 @@ class OAuthActivity : AppCompatActivity() {
 
         viewModel.login.observe(this, { login ->
             if (login) {
-                Log.d(TAG, "Login with Twitch Success")
+                Log.d(tag, "Login with Twitch Success")
             } else {
-                Log.d(TAG, "Login with Twitch Failed")
+                Log.d(tag, "Login with Twitch Failed")
                 finish()
                 startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
             }

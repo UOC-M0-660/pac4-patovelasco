@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +17,8 @@
             android:id="@+id/imageView"
             android:layout_width="@dimen/profile_image_size"
             android:layout_height="@dimen/profile_image_size"
-            tools:src="@color/black" />
+            tools:src="@color/black"
+            android:contentDescription="@string/twitch_image" />
 
         <LinearLayout
             android:id="@+id/viewsContainer"
@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 app:tint="@color/colorOnBackground"
                 android:layout_marginEnd="@dimen/margin_small"
-                android:src="@drawable/ic_eye"/>
+                android:src="@drawable/ic_eye"
+                android:contentDescription="@string/image_icon" />
             <TextView
                 android:id="@+id/viewsText"
                 android:layout_width="wrap_content"

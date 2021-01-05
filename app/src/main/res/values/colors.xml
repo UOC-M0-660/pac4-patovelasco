@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorSecondary">#03DAC5</color>
@@ -10,8 +10,8 @@
     <color name="colorOnSecondary">@color/black</color>
     <color name="colorOnBackground">@color/black</color>
     <color name="colorOnError">@color/white</color>
-    <color name="colorOnSurface">@color/black</color>
-    <color name="scrimBackground">@color/white</color>
+    <color name="colorOnSurface" tools:keep="@color/colorOnSurface">@color/black</color>
+    <color name="scrimBackground" tools:keep="@color/scrimBackground">@color/white</color>
 
 
     <color name="white">#FFFFFF</color>

@@ -7,8 +7,8 @@ import edu.uoc.pac4.data.streams.Stream
 import edu.uoc.pac4.data.streams.StreamsRepository
 import kotlinx.coroutines.launch
 
-class StreamsViewModel (
-        private val repository: StreamsRepository
+class StreamsViewModel(
+    private val repository: StreamsRepository
 ) : ViewModel() {
 
     // Live Data
@@ -20,7 +20,7 @@ class StreamsViewModel (
         }
     }
 
-    fun clearAccessToken(){
+    fun clearAccessToken() {
         repository.clearAccessToken()
     }
 }
